@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distance Calculator</title>
+    <style>
+        /* ... CSS styles ... */
+		 body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+        }
+
+        .container input[type="text"],
+        .container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+		 body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url("backimage.jfif");
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .results {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .results div {
+            margin-bottom: 10px;
+        }
+		.navbar {
+            background-color: #333;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            float: right;
+        }
+
+        .navbar li {
+            float: left;
+        }
+		.navbar a {
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="#" onclick="showHomePage()">Home</a></li>
+            <li><a href="#" id="auto1" onclick="showLoginPage()">Login</a></li>
+            <li><a href="#" onclick="logout()" id="auto4">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div  id="homePage">
+        <h1><i><i></h1>
+    </div>
+
+    <div class="container" id="loginPage" style="display: none;">
+        <h1 style="color:orange">Login</h1>
+        <input type="text" id="email" placeholder="email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()" id="auto2">Log In</button>
+    </div>
+
+    <div class="container" id="calculatorPage" style="display: none;">
+        <h1 style="color:orange">Distance Calculator</h1>
+        <div>
+            <input type="text" id="origin" placeholder="Enter origin location">
+        </div>
+        <div>
+            <input type="text" id="destination" placeholder="Enter destination location">
+        </div>
+        <button onclick="calculateDistance()" id="auto3">Calculate</button>
+
+        <div class="results">
+            <h2>Results:</h2>
+            <div id="distanceKm"></div>
+            <div id="distanceMiles"></div>
+            <div id="duration"></div>
+        </div>
+    </div>
+
+    <script>
+        function showHomePage() {
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('calculatorPage').style.display = 'none';
+        }
+
+        function showLoginPage() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('calculatorPage').style.display = 'none';
+        }
+
+       function login() {
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+
+    // Email format validation
+    var emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+        alert('Invalid email format. Please enter a valid email.');
+        return;
+    }
+
+    // Perform authentication logic here
+    // For demonstration purposes, let's assume the login is successful
+
+    showCalculatorPage();
+}
+
+        function showCalculatorPage() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('calculatorPage').style.display = 'block';
+        }
+
+        function calculateDistance() {
+            var origin = document.getElementById('origin').value;
+            var destination = document.getElementById('destination').value;
+
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix(
+                {
+                    origins: [origin],
+                    destinations: [destination],
+                    travelMode: 'DRIVING',
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                    avoidHighways: false,
+                    avoidTolls: false
+                },
+                function(response, status) {
+                    if (status === 'OK') {
+                        var distanceInMeters = response.rows[0].elements[0].distance.value;
+                        var distanceInKm = (distanceInMeters / 1000).toFixed(2);
+                        var distanceInMiles = (distanceInMeters / 1609.34).toFixed(2);
+                        var duration = response.rows[0].elements[0].duration.text;
+
+                        document.getElementById('distanceKm').innerHTML = 'Distance in Kms: ' + distanceInKm + ' km';
+                        document.getElementById('distanceMiles').innerHTML = 'Distance in Miles: ' + distanceInMiles + ' miles';
+                        document.getElementById('duration').innerHTML = 'Duration: ' + duration;
+                    } else {
+                        alert('Error: ' + status);
+                    }
+                }
+            );
+        }
+
+        function logout() {
+            showHomePage();
+            alert('Logged out successfully!');
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxACrlXZI3XbPbp-lcKjbfC7j8EONEu4Q&libraries=places"></script>
+</body>
+</html>
